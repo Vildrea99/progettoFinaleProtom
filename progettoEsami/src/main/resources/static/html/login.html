@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- BOXICONS -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <!-- JS E CSS ESTERNI -->
+
+    <script src="../js/login.js" defer></script>
+    <link rel="stylesheet" href="../css/login.css">
+
+    <title>Login & Register | Ludiflex</title>
+   
+</head>
+<body>
+   
+
+    
+  <div class="background"></div>
+  <div class="overlay"></div>
+
+    <div class="wrapper">
+        <div class="form-header">
+            <div class="titles">
+                <div class="title-login">Login</div>
+                <div class="title-register">Registrati</div>
+            </div>
+        </div>
+            <!-- LOGIN FORM -->
+<form action="#" class="login-form" autocomplete="off">
+    <div class="input-box">
+        <input type="text" class="input-field" id="log-username" required>
+        <label for="log-username" class="label">Username</label>
+        <i class='bx bx-envelope icon'></i>
+    </div>
+    <div class="input-box">
+        <input type="password" class="input-field" id="log-pass" required>
+        <label for="log-pass" class="label">Password</label>
+        <i class='bx bx-lock-alt icon'></i>
+    </div>
+    <div class="form-cols">
+        <div class="col-1"></div>
+        <div class="col-2">
+            <a href="#" onclick="forgotPasswordFunction()">Password dimenticata?</a>
+        </div>
+    </div>
+    <div class="input-box">
+        <button class="btn-submit" id="SignInBtn" onclick="login()" type="button">Entra</button>
+
+    </div>
+    <div class="switch-form">
+        <span>Nuovo utente? <a href="#" onclick="registerFunctionShow()">Registrati!</a></span>
+    </div>
+</form>
+        </form>
+       <!-- REGISTER FORM -->
+<form action="#" class="register-form" autocomplete="off">
+    <span id="validation-check" style="color: red; font-size: 1rem;"></span>
+
+    <div class="input-box">
+        <input type="text" class="input-field" id="reg-nome" required onblur="nameCheck()">
+        <label for="reg-nome" class="label">Nome</label>
+        <i class='bx bx-user icon'></i>
+        <span id="firstName-check" style="color: red; font-size: 0.9rem;"></span>
+    </div>
+
+    <div class="input-box">
+        <input type="text" class="input-field" id="reg-cognome" required onblur="surnameCheck()">
+        <label for="reg-cognome" class="label">Cognome</label>
+        <i class='bx bx-user icon'></i>
+        <span id="surname-check" style="color: red; font-size: 0.9rem;"></span>
+    </div>
+
+    <div class="input-box">
+        <input type="text" class="input-field" id="reg-indirizzo" required onblur="addressCheck()">
+        <label for="reg-indirizzo" class="label">Indirizzo</label>
+        <i class='bx bx-user icon'></i>
+        <span id="address-check" style="color: red; font-size: 0.9rem;"></span>
+    </div>
+
+    <div class="input-box">
+        <input type="text" class="input-field" id="reg-CF" required onblur="cfCheck()">
+        <label for="reg-CF" class="label">Codice Fiscale</label>
+        <i class='bx bx-user icon'></i>
+        <span id="cf-check" style="color: red; font-size: 0.9rem;"></span>
+    </div>
+
+    <div class="input-box">
+        <input type="text" class="input-field" id="reg-email" required onblur="emailCheck()">
+        <label for="reg-email" class="label">Email</label>
+        <i class='bx bx-envelope icon'></i>
+        <span id="email-check" style="color: red; font-size: 0.9rem;"></span>
+    </div>
+
+    <div class="input-box">
+        <input type="text" class="input-field" id="reg-name" required onblur="checkNameAvailability()">
+        <label for="reg-name" class="label">Username</label>
+        <i class='bx bx-user icon'></i>
+        <span id="name-check" style="color: red; font-size: 0.9rem;"></span>
+
+    </div>
+
+    <div class="input-box">
+        <input type="password" class="input-field" id="reg-pass" required>
+        <label for="reg-pass" class="label">Password</label>
+        <i class='bx bx-lock-alt icon'></i>
+    </div>
+    <div class="form-cols">
+        <div class="col-1">
+            <input type="checkbox" id="agree">
+            <label for="agree"> Accetto termini e condizioni</label>
+        </div>
+        <div class="col-2"></div>
+    </div>
+   <div class="input-box">
+    <button class="btn-submit" id="SignUpBtn" type="submit">Crea profilo</button>
+</div>
+
+    <div class="switch-form">
+        <span>Hai già un account? <a href="#" onclick="loginFunction()">Entra!</a></span>
+    </div>
+</form>
+
+  <!-- FORGOT FORM -->
+<form action="#" class="forgot-form" autocomplete="off">
+    <div class="title-forgot">Recupero password</div>
+
+    <div class="input-box">
+        <input type="text" class="input-field" id="forgot-email" required>
+        <label for="forgot-email" class="label">Email di riferimento</label>
+        <i class='bx bx-envelope icon'></i>
+    </div>
+    <div class="input-box">
+        <button class="btn-submit">Invia un link di recupero <i class='bx bx-mail-send'></i></button>
+    </div>
+    <div class="switch-form">
+        <span><a href="#" onclick="loginFunction()">Vuoi ritornare al login? </a></span>
+    </div>
+</form>
+
+
+<div id="esito" style="margin-top: 1rem; text-align: center; color: red;"></div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+</body>
+</html>
+
+

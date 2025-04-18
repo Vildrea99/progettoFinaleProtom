@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home Personale</title>
+<script src="../js/auth.js"></script>
+<script>
+	document.addEventListener("DOMContentLoaded", () => {
+		checkLogin(user => {
+			console.log("Utente loggato:", user);
+		});
+	});
+</script>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7"
+	crossorigin="anonymous" />
+ <!-- BOXICONS -->
+ <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<style>
+/*header*/
+.hero-banner {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 1.5rem 2rem;
+	margin-bottom: 2rem;
+	border-radius: 2rem;
+	background: linear-gradient(135deg, #cfdff5, #90baf2, #6da5f0);
+	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+	gap: 2rem;
+	transition: all 0.4s ease-in-out;
+}
+
+.hero-banner:hover {
+	transform: scale(1.03);
+	box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
+	background: linear-gradient(135deg, #b1cdee, #7faaf1, #5395ec);
+}
+
+.hero-content {
+	text-align: center;
+}
+
+.university-name {
+	font-size: 2.5rem;
+	font-weight: 700;
+	color: #0d47a1;
+	margin: 0;
+}
+
+.university-subtitle {
+	font-size: 1.25rem;
+	color: #1e3a8a;
+	margin-top: 0.25rem;
+}
+
+/* Immagini dei loghi */
+.hero-logo {
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+	opacity: 0.85;
+	filter: blur(1px) brightness(1.1);
+	mix-blend-mode: screen;
+	transition: transform 0.4s ease, filter 0.4s ease;
+}
+
+.hero-logo:hover {
+	transform: scale(1.15) rotate(3deg);
+	filter: blur(0px) brightness(1.2);
+}
+
+/*fine header*/
+/* === Body background === */
+body {
+	background: linear-gradient(135deg, #e8f1fb, #f0f7ff);
+	font-family: 'Segoe UI', sans-serif;
+	padding: 2rem;
+	margin: 0;
+}
+
+/* === Card container layout === */
+.card-container {
+	display: flex;
+	justify-content: center;
+	gap: 2rem;
+	flex-wrap: wrap;
+	margin-top: 2rem;
+}
+
+/* === Card Styling === */
+.card {
+	background: linear-gradient(145deg, #ecf3fc, #dbe9f8);
+	border: none;
+	border-radius: 1.5rem;
+	box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+	width: 20rem;
+	transition: transform 0.3s ease, box-shadow 0.3s ease;
+	overflow: hidden;
+	position: relative;
+}
+
+.card:hover {
+	transform: translateY(-10px) scale(1.03);
+	box-shadow: 0 16px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* === Immagine === */
+.card-img-top {
+	width: 100%;
+	height: 160px;
+	object-fit: contain;
+	padding: 1rem;
+	filter: brightness(1.05) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+	transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+.card:hover .card-img-top {
+	filter: brightness(1.2);
+	transform: scale(1.05);
+}
+
+/* === Testi === */
+.card-title {
+	color: #0d47a1;
+	font-weight: 700;
+	font-size: 1.4rem;
+}
+
+.card-text {
+	color: #1e3a8a;
+	font-size: 0.95rem;
+	line-height: 1.5;
+	margin-bottom: 1.2rem;
+}
+
+/* === Pulsanti === */
+.card .btn-primary {
+	background: linear-gradient(135deg, #1e3a8a, #0d47a1);
+	border: none;
+	color: #fff;
+	font-weight: 600;
+	border-radius: 2rem;
+	padding: 0.5rem 1.5rem;
+	transition: all 0.3s ease-in-out;
+	box-shadow: 0 6px 16px rgba(13, 71, 161, 0.4);
+}
+
+.card .btn-primary:hover {
+	background: linear-gradient(135deg, #0b2f6a, #0d47a1);
+	box-shadow: 0 8px 20px rgba(13, 71, 161, 0.6);
+	transform: translateY(-2px);
+}
+
+/* === Optional: glowing border around card === */
+.card::before {
+	content: '';
+	position: absolute;
+	top: -2px;
+	left: -2px;
+	width: calc(100% + 4px);
+	height: calc(100% + 4px);
+	border-radius: 1.6rem;
+	background: linear-gradient(45deg, #d6e6fb, #b9d7f4, #dbe9f8);
+	background-size: 300% 300%;
+	z-index: -1;
+	animation: glowBorder 8s ease infinite;
+	filter: blur(6px);
+	opacity: 0.2;
+}
+
+@keyframes glowBorder {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+.input-box {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000; /* assicura che sia visibile sopra gli altri elementi */
+}
+
+.btn-submit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: 50px;
+    background-color: var(--primary-color, #0d47a1); /* fallback se non definito */
+    color: var(--white-color, #fff);
+    font-size: 16px;
+    font-weight: 500;
+    border: none;
+    border-radius: 30px;
+    padding: 0 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.btn-submit:hover {
+    gap: 15px;
+    background-color: #0b2f6a;
+}
+
+.btn-submit i {
+    font-size: 20px;
+}
+
+
+</style>
+</head>
+<body>
+
+	<header class="hero-banner">
+		<img src="../img/logo.png" alt="Logo Università"
+			class="hero-logo left-logo" />
+
+		<div class="hero-content">
+			<h1 class="university-name">Mancuso University</h1>
+			<p class="university-subtitle">Dove i tuoi sogni forse diventano
+				realtà</p>
+		</div>
+
+		<img src="../img/logo.png" alt="Logo Università"
+			class="hero-logo right-logo" />
+	</header>
+
+
+	<div class="card-container">
+
+		<div class="card" style="width: 18rem;">
+			<img src="../img/usericon.png" class="card-img-top" alt="...">
+			<div class="card-body">
+				<h5 class="card-title">Profilo</h5>
+				<p class="card-text">Accedi all'area dedicata al tuo profilo
+					privato per visionare e/o modificare i dati, visualizzare avvisi
+					istituzionali, cercare i professori ...</p>
+				<a href="profilo.html" class="btn btn-primary">Vai!</a>
+			</div>
+		</div>
+
+		<div class="card" style="width: 18rem;">
+			<img src="../img/pergamenaicon.png" class="card-img-top" alt="...">
+			<div class="card-body">
+				<h5 class="card-title">Exams Overview</h5>
+				<p class="card-text">Lista aggiornata degli esami, per una
+					panoramica sintetica dei tuoi progressi o, per meglio dire, dei
+					tuoi fallimenti.</p>
+				<a href="area_riservata.html" class="btn btn-primary">Vai!</a>
+			</div>
+		</div>
+	</div>
+	
+    <!-- LOGOUT -->
+	<div class="input-box">
+        <button class="btn-submit" id="btn-logout" style="text-decoration: none;">Logout  <i class='bx bx-log-out'></i></button>
+    </div>
+
+
+
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
+		crossorigin="anonymous"></script>
+
+<script src="../js/auth.js"></script>
+<script>
+    document.getElementById("btn-logout").addEventListener("click", () => {
+        logout(); 
+    });
+</script>
+
+</body>
+</html>
