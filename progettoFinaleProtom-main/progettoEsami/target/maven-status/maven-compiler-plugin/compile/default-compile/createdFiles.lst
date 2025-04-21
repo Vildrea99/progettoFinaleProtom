@@ -1,0 +1,14 @@
+it\accenture\progettoEsami\controller\UserController.class
+it\accenture\progettoEsami\ProgettoEsamiApplication.class
+it\accenture\progettoEsami\repository\EsameRepository.class
+it\accenture\progettoEsami\service\EsamiService.class
+it\accenture\progettoEsami\controller\LoginRequestController.class
+it\accenture\progettoEsami\model\EsameDTO.class
+it\accenture\progettoEsami\model\UserDTO.class
+it\accenture\progettoEsami\model\LoginRequest.class
+it\accenture\progettoEsami\repository\UserRepository.class
+it\accenture\progettoEsami\model\User.class
+it\accenture\progettoEsami\model\Esame.class
+it\accenture\progettoEsami\controller\EsameController.class
+it\accenture\progettoEsami\service\UserService.class
+it\accenture\progettoEsami\model\User$Ruolo.class
