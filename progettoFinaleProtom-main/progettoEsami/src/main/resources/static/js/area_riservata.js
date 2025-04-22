@@ -19,118 +19,49 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    document.addEventListener("DOMContentLoaded", () => {
+        const modal = document.getElementById("prenotazioneModal");
+        const closeModalButton = document.getElementById("closeModal");
 
-    document.getElementById("btn-modifica").addEventListener("click", () => {
-        // Chiedi il codice dell'esame da modificare
-
-        const codiceEsame = prompt("Inserisci il codice dell'esame da modificare:");
-
-        if (!codiceEsame) {
-            alert("Codice esame non inserito!");
-            return;
+        if (modal && closeModalButton) {
+            closeModalButton.addEventListener("click", () => {
+                modal.classList.remove("show");
+                modal.style.display = "none";
+            });
         }
 
-        // Trova la riga corrispondente nella tabella
-        const rows = document.querySelectorAll("#esami-table tr");
-        let esameTrovato = false;
-
-        rows.forEach((row, index) => {
-            if (index === 0) return; // Salta l'intestazione della tabella
-
-            const codiceCell = row.cells[0]; // Prima cella della riga
-            if (codiceCell && codiceCell.innerText === codiceEsame) {
-                esameTrovato = true;
-
-
-                // Mostra il fieldset e popola i campi con i dati dell'esame
-                const fieldset = document.getElementById("datiDaModificare");
-                fieldset.style.display = "block";
-
-                // Popola i campi del fieldset
-                document.querySelector("#datiDaModificare input[aria-label='readonly input example']").value = codiceEsame;
-                document.querySelectorAll("#datiDaModificare .modifica")[1].value = row.cells[1].innerText; // Corso
-                document.querySelectorAll("#datiDaModificare .modifica")[2].value = row.cells[2].innerText; // Data
-                document.querySelectorAll("#datiDaModificare .modifica")[3].value = row.cells[3].innerText; // Orario
-                document.querySelectorAll("#datiDaModificare .modifica")[4].value = row.cells[4].innerText; // Professore
-
-                // Aggiungi un bottone per salvare le modifiche
-                const salvaButton = document.createElement("button");
-                salvaButton.innerText = "Salva Modifiche";
-                salvaButton.classList.add("btn-save");
-                salvaButton.addEventListener("click", () => {
-                    // Aggiorna i valori nella tabella
-                    row.cells[1].innerText = document.querySelectorAll("#datiDaModificare .form-control")[1].value; // Corso
-                    row.cells[2].innerText = document.querySelectorAll("#datiDaModificare .form-control")[2].value; // Data
-                    row.cells[3].innerText = document.querySelectorAll("#datiDaModificare .form-control")[3].value; // Orario
-                    row.cells[4].innerText = document.querySelectorAll("#datiDaModificare .form-control")[4].value; // Professore
-
-                    // Nascondi il fieldset
-                    fieldset.style.display = "none";
-
-                    // Rimuovi il bottone "Salva Modifiche"
-                    salvaButton.remove();
-
-                    alert("Esame modificato con successo!");
-                });
-
-                // Aggiungi il bottone al fieldset
-                fieldset.appendChild(salvaButton);
-            }
-        });
-
-        if (!esameTrovato) {
-            alert("Esame con codice " + codiceEsame + " non trovato!");
+        const btnCancellaPrenotazione = document.getElementById("btnCancellaPrenotazione");
+        if (btnCancellaPrenotazione) {
+            btnCancellaPrenotazione.addEventListener("click", () => {
+                const codicePrenotazione = document.getElementById("modalCodicePrenotazione").innerText;
+                console.log("Codice prenotazione da cancellare:", codicePrenotazione);
+                cancellaPrenotazione(codicePrenotazione);
+            });
         }
     });
 
-    document.getElementById("btn-cancella").addEventListener("click", () => {
-        // Chiedi il codice dell'esame da cancellare
-        const codiceEsame = prompt("Inserisci il codice dell'esame da cancellare:");
-
-        if (!codiceEsame) {
-            alert("Codice esame non inserito!");
-            return;
+    document.addEventListener("DOMContentLoaded", () => {
+        const modal = document.getElementById("prenotazioneModal");
+        if (modal) {
+            modal.style.display = "none";
         }
+    });
 
-        // Trova la riga corrispondente nella tabella
-        const rows = document.querySelectorAll("#esami-table tr");
-        let esameTrovato = false;
+    document.addEventListener("DOMContentLoaded", () => {
+        const closeModalButton = document.querySelector(".close");
+        const modal = document.getElementById("prenotazioneModal");
 
-        rows.forEach((row, index) => {
-            if (index === 0) return; // Salta l'intestazione della tabella
-
-            const codiceCell = row.cells[0]; // Prima cella della riga
-            if (codiceCell && codiceCell.innerText === codiceEsame) {
-                esameTrovato = true;
-
-                // Effettua una richiesta DELETE al server
-                fetch(`/esami/${codiceEsame}`, {
-                    method: "DELETE"
-                })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error("Errore durante l'eliminazione dell'esame");
-                        }
-                        // Non chiamare response.json() se il server non restituisce un corpo
-                        return response.text(); // Usa text() se il server restituisce una stringa vuota
-                    })
-                    .then(() => {
-                        // Rimuovi la riga dalla tabella
-                        row.remove();
-                        alert("Esame con codice " + codiceEsame + " cancellato con successo!");
-                    })
-                    .catch(error => {
-                        console.error("Errore:", error);
-                        alert("Si è verificato un errore durante l'eliminazione dell'esame.");
-                    });
-            }
-        });
-
-        if (!esameTrovato) {
-            alert("Esame con codice " + codiceEsame + " non trovato!");
+        if (closeModalButton && modal) {
+            closeModalButton.addEventListener("click", () => {
+                modal.classList.remove("show");
+                modal.style.display = "none";
+            });
         }
     });
 });
+
+
+//FUNZIONI
 
 //Funzione per caricare gli esami nella tabella
 function caricaEsami(forceReload = false) {
@@ -148,15 +79,16 @@ function caricaEsami(forceReload = false) {
                 console.warn("Nessun esame trovato.");
                 return;
             }
+            data.sort((a, b) => a.codiceEsame - b.codiceEsame);
+
+
             popolaTabella(data);
         })
         .catch(err => console.error("Errore:", err));
 }
 
 
-//FUNZIONI
-
-// Funzione controllo sessione
+// Event Listener per il controllo sessione
 document.addEventListener("DOMContentLoaded", () => checkLogin(() => {
     console.log("Utente autenticato");
 }));
@@ -191,6 +123,16 @@ document.addEventListener("DOMContentLoaded", () => {
 function popolaTabella(esami) {
     const table = document.getElementById("esami-table");
 
+    // Ottieni l'utente loggato dalla sessione
+    const utente = JSON.parse(sessionStorage.getItem("user"));
+
+    if (!utente || !utente.matricola) {
+        alert("Errore: utente non autenticato.");
+        return;
+    }
+
+    const matricolaUtente = utente.matricola;
+
     // Svuota la tabella (tranne l'intestazione)
     while (table.rows.length > 1) {
         table.deleteRow(1);
@@ -220,21 +162,34 @@ function popolaTabella(esami) {
         tdProf.innerText = esame.professore;
         tr.appendChild(tdProf);
 
-        // Colonna per il pulsante
+        // Colonna per il pulsante prenota
         let tdPrenota = document.createElement("td");
         let prenotaButton = document.createElement("button");
 
-        if (esame.prenotato) {
-            // Se l'esame è già prenotato
-            prenotaButton.innerText = "Cancella Prenotazione";
-            prenotaButton.classList.add("btn", "btn-danger");
-            prenotaButton.onclick = () => cancellaPrenotazione(esame.codiceEsame, prenotaButton);
-        } else {
-            // Se l'esame non è prenotato
-            prenotaButton.innerText = "Prenota";
-            prenotaButton.classList.add("btn", "btn-primary");
-            prenotaButton.onclick = () => prenotaEsame(esame.codiceEsame, prenotaButton);
-        }
+        // Controlla se l'esame è prenotato dall'utente
+        fetch(`/prenota/${matricolaUtente}/${esame.codiceEsame}`)
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else if (response.status === 404) {
+                    // No booking found
+                    prenotaButton.innerText = "Prenota";
+                    prenotaButton.classList.add("btn", "btn-primary");
+                    prenotaButton.onclick = () => prenotaEsame(esame.codiceEsame, prenotaButton);
+                } else {
+                    throw new Error("Errore durante il controllo della prenotazione");
+                }
+            })
+            .then(prenotazione => {
+                if (prenotazione) {
+                    prenotaButton.innerText = "Mostra Prenotazione";
+                    prenotaButton.classList.add("btn", "btn-info");
+                    prenotaButton.onclick = () => mostraDettagliPrenotazione(matricolaUtente, esame.codiceEsame);
+                }
+            })
+            .catch(error => {
+                console.error("Errore durante il controllo della prenotazione:", error);
+            });
 
         tdPrenota.appendChild(prenotaButton);
         tr.appendChild(tdPrenota);
@@ -249,6 +204,62 @@ const table = document.getElementById("esami-table");
 
 // Definizione delle intestazioni
 const headers = ["Codice", "Corso", "Data", "Orario Inizio", "Professore", "Stato Prenotazione"];
+
+let currentSortColumn = null;
+let currentSortDirection = 'asc';
+
+//Funzione per ordinare la tabella
+function sortTable(column) {
+    fetch("/esami")
+        .then(res => {
+            if (!res.ok) throw new Error("Errore nel recupero dei dati");
+            return res.json();
+        })
+        .then(data => {
+            if (!Array.isArray(data)) {
+                console.error("Formato dei dati non valido.");
+                return;
+            }
+
+            // Toggle sort direction if the same column is clicked
+            if (currentSortColumn === column) {
+                currentSortDirection = currentSortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                currentSortDirection = 'asc';
+            }
+            currentSortColumn = column;
+
+            // Sort data by the selected column
+            data.sort((a, b) => {
+                if (a[column] < b[column]) return currentSortDirection === 'asc' ? -1 : 1;
+                if (a[column] > b[column]) return currentSortDirection === 'asc' ? 1 : -1;
+                return 0;
+            });
+
+            // Update the table with sorted data
+            popolaTabella(data);
+
+            // Update the sort indicators
+            updateSortIndicators(column, currentSortDirection);
+        })
+        .catch(err => console.error("Errore:", err));
+}
+
+//Funzione per aggiornare gli indici di ordinamento
+function updateSortIndicators(column, direction) {
+    // Reset all indicators
+    const indicators = document.querySelectorAll("thead span");
+    indicators.forEach(indicator => {
+        indicator.innerHTML = ""; // Clear the content
+    });
+
+    // Set the indicator for the current column
+    const currentIndicator = document.getElementById(`sort-${column}`);
+    if (currentIndicator) {
+        currentIndicator.innerHTML = direction === 'asc' ? "&#9650;" : "&#9660;"; // Up or Down arrow
+    }
+}
+
 
 // Creazione del contenitore dei bottoni
 const buttonContainer = document.createElement("div");
@@ -271,15 +282,12 @@ fetch("/esami")
     });
 
 
-
-
-
 function creaEsame() {
     const fieldset = document.getElementById("creaEsameFieldset");
     fieldset.style.display = "block";
 
     const salvaButton = document.getElementById("salvaEsame");
-    
+
     // Clona il bottone per rimuovere tutti i listener
     const nuovoSalvaButton = salvaButton.cloneNode(true);
     salvaButton.parentNode.replaceChild(nuovoSalvaButton, salvaButton);
@@ -290,7 +298,6 @@ function creaEsame() {
         const data = new Date(document.getElementById("dataEsame").value).toISOString().split("T")[0];
         const orarioInizio = document.getElementById("orarioEsame").value + ":00";
         const professore = document.getElementById("professoreEsame").value.trim();
-
 
 
         // Validazione dei dati
@@ -410,23 +417,15 @@ function modificaEsame() {
 
                 // Aggiungi un listener al pulsante "Salva"
                 const salvaButton = document.getElementById("salvaModificaEsame");
-                salvaButton.addEventListener("click", () => {
+                const nuovoSalvaButton = salvaButton.cloneNode(true);
+                salvaButton.parentNode.replaceChild(nuovoSalvaButton, salvaButton);
+
+                nuovoSalvaButton.addEventListener("click", () => {
                     // Ottieni i nuovi valori dai campi
                     const nuovoCorso = document.getElementById("corsoEsameModifica").value.trim();
                     const nuovaData = document.getElementById("dataEsameModifica").value.trim();
                     const nuovoOrario = document.getElementById("orarioEsameModifica").value.trim();
                     const nuovoProfessore = document.getElementById("professoreEsameModifica").value.trim();
-
-                    // Validazione dei dati
-                    if (!/^\d{4}-\d{2}-\d{2}$/.test(nuovaData)) {
-                        alert("Formato data non valido! Usa il formato YYYY-MM-DD.");
-                        return;
-                    }
-
-                    if (!/^\d{2}:\d{2}$/.test(nuovoOrario)) {
-                        alert("Formato orario non valido! Usa il formato HH:MM.");
-                        return;
-                    }
 
                     const datiAggiornati = {
                         corso: nuovoCorso,
@@ -451,8 +450,8 @@ function modificaEsame() {
                         })
                         .then(() => {
                             alert("Esame modificato con successo!");
-                            caricaEsami(true); 
-                            
+                            caricaEsami(true);
+
                             fieldset.style.display = "none"; // Nascondi il fieldset
                         })
                         .catch(error => {
@@ -467,12 +466,9 @@ function modificaEsame() {
 }
 
 
-
-
-
 function cercaTutto(e) {
     e.preventDefault();
-    const params = new URLSearchParams(); 
+    const params = new URLSearchParams();
 
     let data = document.getElementById("dataRicerca").value;
     let corso = document.getElementById("corsoRicerca").value;
@@ -506,9 +502,30 @@ function cercaTutto(e) {
 }
 
 
+function mostraDettagliPrenotazione(matricola, codiceEsame) {
+    fetch(`/prenota/${matricola}/${codiceEsame}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Errore nel recupero dei dettagli della prenotazione");
+            }
+            return response.json();
+        })
+        .then(prenotazione => {
+            const modal = document.getElementById("prenotazioneModal");
+            document.getElementById("modalCodicePrenotazione").innerText = prenotazione.esami.codiceEsame;
+            document.getElementById("modalCorso").innerText = prenotazione.esami.corso;
+            document.getElementById("modalData").innerText = new Date(prenotazione.dataPrenotazione).toLocaleString();
+
+            modal.style.display = "block"; // Mostra la modal
+            modal.classList.add("show");
+        })
+        .catch(error => {
+            console.error("Errore:", error);
+            alert("Impossibile recuperare i dettagli della prenotazione.");
+        });
+}
 
 function prenotaEsame(codiceEsame, button) {
-    // Ottieni l'utente loggato dalla sessione
     const utente = JSON.parse(sessionStorage.getItem("user"));
 
     if (!utente || !utente.matricola) {
@@ -518,19 +535,11 @@ function prenotaEsame(codiceEsame, button) {
 
     const matricolaUtente = utente.matricola;
 
-    // Crea il payload per la prenotazione
-    const prenotazione = {
-        codiceEsame: codiceEsame,
-        matricolaUtente: matricolaUtente
-    };
-
-    // Effettua la richiesta POST per creare la prenotazione
-    fetch(`/user/prenota/${matricolaUtente}/${codiceEsame}`, {
-        method: "PUT",
+    fetch(`/prenota/${matricolaUtente}/${codiceEsame}`, {
+        method: "POST",
         headers: {
             "Content-Type": "application/json"
-        },
-        body: JSON.stringify(prenotazione)
+        }
     })
         .then(response => {
             if (!response.ok) {
@@ -538,23 +547,20 @@ function prenotaEsame(codiceEsame, button) {
             }
             return response.json();
         })
-        .then(() => {
+        .then(prenotazione => {
             alert("Esame prenotato con successo!");
-
-            // Trasforma il bottone in "Cancella Prenotazione"
-            button.innerText = "Cancella Prenotazione";
+            button.innerText = "Show Prenotazione";
             button.classList.remove("btn-primary");
-            button.classList.add("btn-danger");
-            button.onclick = () => cancellaPrenotazione(codiceEsame, button);
+            button.classList.add("btn-info");
+            button.onclick = () => mostraDettagliPrenotazione(matricolaUtente, codiceEsame);
         })
         .catch(error => {
-            console.error("Errore durante la prenotazione:", error);
+            console.error("Errore:", error);
             alert("Si è verificato un errore durante la prenotazione dell'esame.");
         });
 }
 
-function cancellaPrenotazione(codiceEsame, button) {
-    // Ottieni l'utente loggato dalla sessione
+function cancellaPrenotazione(codicePrenotazione, button) {
     const utente = JSON.parse(sessionStorage.getItem("user"));
 
     if (!utente || !utente.matricola) {
@@ -564,8 +570,8 @@ function cancellaPrenotazione(codiceEsame, button) {
 
     const matricolaUtente = utente.matricola;
 
-    // Effettua la richiesta DELETE per cancellare la prenotazione
-    fetch(`/user/prenota/${matricolaUtente}/${codiceEsame}`, {
+
+    fetch(`/prenota/${codicePrenotazione}`, {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json"
@@ -575,19 +581,14 @@ function cancellaPrenotazione(codiceEsame, button) {
             if (!response.ok) {
                 throw new Error("Errore durante la cancellazione della prenotazione");
             }
-            return response.text(); 
-        })
-        .then(() => {
             alert("Prenotazione cancellata con successo!");
-
-            // Trasforma il bottone in "Prenota"
-            button.innerText = "Prenota";
-            button.classList.remove("btn-danger");
-            button.classList.add("btn-primary");
-            button.onclick = () => prenotaEsame(codiceEsame, button);
+            const modal = document.getElementById("prenotazioneModal");
+            modal.classList.remove("show");
+            modal.style.display = "none";
+            caricaEsami(); // Ricarica la tabella degli esami
         })
         .catch(error => {
-            console.error("Errore durante la cancellazione della prenotazione:", error);
+            console.error("Errore:", error);
             alert("Si è verificato un errore durante la cancellazione della prenotazione.");
         });
 }

@@ -9,52 +9,52 @@ const esito = document.getElementById("esito");
 
 // Mostra form di login
 function loginFunction() {
-	loginForm.style.left = "50%";
-	loginForm.style.opacity = 1;
-	registerForm.style.left = "150%";
-	registerForm.style.opacity = 0;
-	forgotForm.style.left = "150%";
-	forgotForm.style.opacity = 0;
-	wrapper.style.height = loginForm.scrollHeight + 120 + 64 + "px";
+    loginForm.style.left = "50%";
+    loginForm.style.opacity = 1;
+    registerForm.style.left = "150%";
+    registerForm.style.opacity = 0;
+    forgotForm.style.left = "150%";
+    forgotForm.style.opacity = 0;
+    wrapper.style.height = loginForm.scrollHeight + 120 + 64 + "px";
 
-	loginTitle.style.top = "50%";
-	loginTitle.style.opacity = 1;
-	registerTitle.style.top = "50px";
-	registerTitle.style.opacity = 0;
-	forgotTitle.style.opacity = 0;
+    loginTitle.style.top = "50%";
+    loginTitle.style.opacity = 1;
+    registerTitle.style.top = "50px";
+    registerTitle.style.opacity = 0;
+    forgotTitle.style.opacity = 0;
 }
 
 // Mostra form di registrazione
 function registerFunctionShow() {
-	loginForm.style.left = "-50%";
-	loginForm.style.opacity = 0;
-	registerForm.style.left = "50%";
-	registerForm.style.opacity = 1;
-	forgotForm.style.left = "150%";
-	forgotForm.style.opacity = 0;
-	wrapper.style.height = registerForm.scrollHeight + 120 + 64 + "px";
+    loginForm.style.left = "-50%";
+    loginForm.style.opacity = 0;
+    registerForm.style.left = "50%";
+    registerForm.style.opacity = 1;
+    forgotForm.style.left = "150%";
+    forgotForm.style.opacity = 0;
+    wrapper.style.height = registerForm.scrollHeight + 120 + 64 + "px";
 
-	loginTitle.style.top = "-60px";
-	loginTitle.style.opacity = 0;
-	registerTitle.style.top = "50%";
-	registerTitle.style.opacity = 1;
-	forgotTitle.style.opacity = 0;
+    loginTitle.style.top = "-60px";
+    loginTitle.style.opacity = 0;
+    registerTitle.style.top = "50%";
+    registerTitle.style.opacity = 1;
+    forgotTitle.style.opacity = 0;
 }
 
 // Mostra form di recupero password
 function forgotPasswordFunction() {
-	loginForm.style.left = "-50%";
-	loginForm.style.opacity = 0;
-	registerForm.style.left = "-50%";
-	registerForm.style.opacity = 0;
-	forgotForm.style.left = "50%";
-	forgotForm.style.opacity = 1;
-	wrapper.style.height = "300px";
+    loginForm.style.left = "-50%";
+    loginForm.style.opacity = 0;
+    registerForm.style.left = "-50%";
+    registerForm.style.opacity = 0;
+    forgotForm.style.left = "50%";
+    forgotForm.style.opacity = 1;
+    wrapper.style.height = "300px";
 
-	loginTitle.style.opacity = 0;
-	registerTitle.style.opacity = 0;
-	forgotTitle.style.top = "50%";
-	forgotTitle.style.opacity = 1;
+    loginTitle.style.opacity = 0;
+    registerTitle.style.opacity = 0;
+    forgotTitle.style.top = "50%";
+    forgotTitle.style.opacity = 1;
 }
 
 // Registrazione
@@ -112,13 +112,13 @@ function login() {
     const username = document.getElementById("log-username").value;
     const password = document.getElementById("log-pass").value;
 
-    const data = { username, password };
+    const data = {username, password};
 
     fetch("/login", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
-        }, 
+        },
         credentials: "include",
         body: JSON.stringify(data)
     })
@@ -140,7 +140,7 @@ function login() {
             sessionStorage.setItem("user", JSON.stringify(user))
 
             setTimeout(() => {
-                
+
                 window.location.href = "/html/disimpegno.html"; // Reindirizza alla home page
             }, 1000); // Attendi 1 secondo prima di reindirizzare
         })
@@ -153,19 +153,19 @@ function login() {
 
 // Collega i form agli handler
 document.addEventListener("DOMContentLoaded", () => {
-	if (registerForm) {
-		registerForm.addEventListener("submit", event => {
-			event.preventDefault();
-			registerFunction();
-		});
-	}
+    if (registerForm) {
+        registerForm.addEventListener("submit", event => {
+            event.preventDefault();
+            registerFunction();
+        });
+    }
 
-	if (loginForm) {
-		loginForm.addEventListener("submit", event => {
-			event.preventDefault();
-			login();
-		});
-	}
+    if (loginForm) {
+        loginForm.addEventListener("submit", event => {
+            event.preventDefault();
+            login();
+        });
+    }
 });
 
 //Variabile per il controllo della funzione sotto
@@ -193,11 +193,11 @@ function checkNameAvailability() {
             if (result.available) {
                 nameCheck.innerText = "Nome disponibile.";
                 nameCheck.style.color = "green";
-                isNameAvailable=true;
+                isNameAvailable = true;
             } else {
                 nameCheck.innerText = "Nome già presente nel database.";
                 nameCheck.style.color = "red";
-                isNameAvailable=false;
+                isNameAvailable = false;
             }
         })
         .catch(error => {
@@ -206,13 +206,15 @@ function checkNameAvailability() {
         });
 }
 
+//Variabile per il controllo
 let isNameValid = false;
 
-function nameCheck(){
+//Funzione per il controllo della validità del nome
+function nameCheck() {
     const nome = document.getElementById("reg-nome").value;
     const firstNameCheck = document.getElementById("firstName-check");
 
-    if(!nome || nome.length < 2){
+    if (!nome || nome.length < 2) {
         firstNameCheck.innerText = "Il nome deve contenere almeno 2 caratteri";
         firstNameCheck.style.color = "red";
         isNameValid = false;
@@ -224,7 +226,8 @@ function nameCheck(){
 
 let isSurnameValid = false;
 
-function surnameCheck(){
+//Funzione per il controllo della validità del cognome
+function surnameCheck() {
     const cognome = document.getElementById("reg-cognome").value;
     const surnameCheckElement = document.getElementById("surname-check");
     if (!cognome || cognome.length < 2) {
@@ -232,13 +235,14 @@ function surnameCheck(){
         surnameCheckElement.style.color = "red";
         isSurnameValid = false;
     } else {
-        surnameCheckElement.innerText = ""; 
+        surnameCheckElement.innerText = "";
         isSurnameValid = true;
     }
 }
 
 let isAddressValid = false;
 
+//Funzione per il controllo della validità dell'indirizzo
 function addressCheck() {
     const indirizzo = document.getElementById("reg-indirizzo").value;
     const addressCheckElement = document.getElementById("address-check");
@@ -255,6 +259,7 @@ function addressCheck() {
 
 let isCfValid = false;
 
+//Funzione per il controllo della validità del codice fiscale
 function cfCheck() {
     const cf = document.getElementById("reg-CF").value;
     const cfCheckElement = document.getElementById("cf-check");
@@ -272,6 +277,7 @@ function cfCheck() {
 
 let isEmailValid = false;
 
+//Funzione per il controllo della validità dell'email
 function emailCheck() {
     const email = document.getElementById("reg-email").value;
     const emailCheckElement = document.getElementById("email-check");
@@ -287,26 +293,26 @@ function emailCheck() {
     }
 }
 
-
+//Funzione per la validazione della registrazione
 function validateRegistrationForm() {
     const password = document.getElementById("reg-pass").value;
     const agree = document.getElementById("agree").checked;
 
     const validation = document.getElementById("validation-check");
 
-    if(!isNameValid){
+    if (!isNameValid) {
         return false;
     }
 
-    if(!isSurnameValid){
+    if (!isSurnameValid) {
         return false;
     }
 
-    if(!isAddressValid){
+    if (!isAddressValid) {
         return false;
     }
 
-    if(!isCfValid){
+    if (!isCfValid) {
         return false;
     }
 

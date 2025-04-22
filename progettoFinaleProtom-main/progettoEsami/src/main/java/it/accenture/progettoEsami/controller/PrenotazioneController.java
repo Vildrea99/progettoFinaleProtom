@@ -27,6 +27,11 @@ public class PrenotazioneController {
         return prenotazioniService.getPrenotazione(codicePrenotazione);
     }
 
+    @GetMapping("/{matricola}/{codiceEsame}")
+    public ResponseEntity<Prenotazioni> getPrenotazioneSenzaCodice(@PathVariable int matricola, @PathVariable int codiceEsame) {
+        return prenotazioniService.getPrenotazioneSenzaCodice(matricola, codiceEsame);
+    }
+
     //Restituisce tutte le prenotazioni legate a una matricola
     @GetMapping("/{matricola}")
     public ResponseEntity<List<Prenotazioni>> getPrenotazioniStudente(@PathVariable int matricola){

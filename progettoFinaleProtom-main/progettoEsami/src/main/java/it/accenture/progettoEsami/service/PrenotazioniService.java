@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class PrenotazioniService {
     private PrenotazioniRepository prenotazioniRepository;
 
     // Prenota l'esame
-    public ResponseEntity<Prenotazioni> prenotaEsame(int idEsame, int idStudente) {
+    public ResponseEntity<Prenotazioni> prenotaEsame(int idStudente, int idEsame) {
         Esame esame = esameRepository.findById(idEsame).orElse(null);
         User studente = userRepository.findById(idStudente).orElse(null);
         Prenotazioni prenotazione = new Prenotazioni();
@@ -36,6 +37,7 @@ public class PrenotazioniService {
         if (esame != null && studente != null) {
             prenotazione.setStudente(studente);
             prenotazione.setEsami(esame);
+            prenotazione.setDataPrenotazione(new Date());
 
             prenotazioniRepository.save(prenotazione);
             return ResponseEntity.ok(prenotazione);
@@ -79,5 +81,22 @@ public class PrenotazioniService {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    }
+
+    public ResponseEntity<Prenotazioni> getPrenotazioneSenzaCodice(int matricola, int codiceEsame) {
+        User studente = userRepository.findById(matricola).orElse(null);
+        Esame esame = esameRepository.findById(codiceEsame).orElse(null);
+        ResponseEntity<Prenotazioni> response;
+
+        if (studente != null && esame != null) {
+            Prenotazioni prenotazione = prenotazioniRepository.findByStudenteAndEsami(studente, esame);
+            if (prenotazione != null) {
+                return response = ResponseEntity.ok(prenotazione);
+            } else {
+                return response = ResponseEntity.notFound().build();
+            }
+        } else {
+            return response = ResponseEntity.badRequest().body(null);
+        }
     }
 }

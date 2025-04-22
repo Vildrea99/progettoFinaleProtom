@@ -25,12 +25,12 @@
         <table id="esami-table" border="1">
             <thead>
                 <tr>
-                    <th>Codice</th>
-                    <th>Corso</th>
-                    <th>Data</th>
-                    <th>Orario Inizio</th>
-                    <th>Professore</th>
-                    <th>Stato Prenotazione</th>
+                  <th onclick="sortTable('codiceEsame')">Codice <span id="sort-codiceEsame"></span></th>
+                  <th onclick="sortTable('corso')">Corso <span id="sort-corso"></span></th>
+                  <th onclick="sortTable('data')">Data <span id="sort-data"></span></th>
+                  <th onclick="sortTable('orarioInizio')">Orario Inizio <span id="sort-orarioInizio"></span></th>
+                  <th onclick="sortTable('professore')">Professore <span id="sort-professore"></span></th>
+                  <th>Stato Prenotazione</th>
                 </tr>
             </thead>
         </table>
@@ -115,6 +115,18 @@
   
     <button id="btn-ricerca" type="button" class="cercaBtn" onclick="cercaTutto(event)"> cerca </button>
   </fieldset>
+
+  <!--Finestra dati prenotazione-->
+  <div id="prenotazioneModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <span id="closeModal" class="close">&times;</span>
+      <h2>Dettagli Prenotazione</h2>
+      <p><strong>Codice Prenotazione:</strong> <span id="modalCodicePrenotazione"></span></p>
+      <p><strong>Corso:</strong> <span id="modalCorso"></span></p>
+      <p><strong>Data Prenotazione:</strong> <span id="modalData"></span></p>
+      <button id="btnCancellaPrenotazione" class="btn btn-danger">Cancella Prenotazione</button>
+    </div>
+  </div>
 
 </body>
 </html>
