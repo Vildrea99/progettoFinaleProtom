@@ -1,6 +1,8 @@
 let currentPage = 1;
-itemsPerPage = 10;
+itemsPerPage = 5;
 let allExams = [];
+let currentSortColumn = '';
+let currentSortDirection = 'asc';
 
 document.addEventListener("DOMContentLoaded", () => {
     // Verifica login e carica esami
@@ -57,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Funzione per caricare gli esami
 function caricaEsami(forceReload = false) {
-    if(allExams.length > 0 && !forceReload) {
+    if (allExams.length > 0 && !forceReload) {
         displayPage(currentPage);
         return;
     }
@@ -154,7 +156,8 @@ async function popolaTabella(esami) {
 }
 
 // Crea pulsante prenotazione
-async function creaPulsantePrenotazione(matricolaUtente, esame, callback = () => {}) {
+async function creaPulsantePrenotazione(matricolaUtente, esame, callback = () => {
+}) {
     const button = document.createElement("button");
     const prenotazione = await verificaPrenotazione(matricolaUtente, esame.codiceEsame);
 
@@ -173,35 +176,24 @@ async function creaPulsantePrenotazione(matricolaUtente, esame, callback = () =>
 
 // Ordina tabella
 function sortTable(column) {
-    fetch("/esami")
-        .then(res => {
-            if (!res.ok) throw new Error("Errore nel recupero dei dati");
-            return res.json();
-        })
-        .then(data => {
-            if (!Array.isArray(data)) {
-                console.error("Formato dei dati non valido.");
-                return;
-            }
+    // Determina direzione ordinamento
+    const sortDirection = currentSortColumn === column
+        ? (currentSortDirection === 'asc' ? 'desc' : 'asc')
+        : 'asc';
 
-            // Determina direzione ordinamento
-            const sortDirection = currentSortColumn === column ?
-                (currentSortDirection === 'asc' ? 'desc' : 'asc') : 'asc';
+    currentSortColumn = column;
+    currentSortDirection = sortDirection;
 
-            currentSortColumn = column;
-            currentSortDirection = sortDirection;
+    // Ordina i dati localmente invece di fare una nuova richiesta
+    allExams.sort((a, b) => {
+        if (a[column] < b[column]) return sortDirection === 'asc' ? -1 : 1;
+        if (a[column] > b[column]) return sortDirection === 'asc' ? 1 : -1;
+        return 0;
+    });
 
-            // Ordina i dati
-            data.sort((a, b) => {
-                if (a[column] < b[column]) return sortDirection === 'asc' ? -1 : 1;
-                if (a[column] > b[column]) return sortDirection === 'asc' ? 1 : -1;
-                return 0;
-            });
-
-            popolaTabella(data);
-            updateSortIndicators(column, sortDirection);
-        })
-        .catch(err => console.error("Errore:", err));
+    // Aggiorna la visualizzazione
+    displayPage(currentPage);
+    updateSortIndicators(column, sortDirection);
 }
 
 // Aggiorna indicatori ordinamento
@@ -237,7 +229,7 @@ function creaEsame() {
 
         fetch("/esami", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {"Content-Type": "application/json"},
             body: JSON.stringify(nuovoEsame)
         })
             .then(response => {
@@ -268,7 +260,7 @@ function cancellaEsame() {
             return;
         }
 
-        fetch(`/esami/${codiceEsame}`, { method: "DELETE" })
+        fetch(`/esami/${codiceEsame}`, {method: "DELETE"})
             .then(response => {
                 if (!response.ok) throw new Error("Errore durante l'eliminazione");
                 return response.text();
@@ -326,7 +318,7 @@ function modificaEsame() {
 
                     fetch(`/esami/${codiceEsame}`, {
                         method: "PUT",
-                        headers: { "Content-Type": "application/json" },
+                        headers: {"Content-Type": "application/json"},
                         body: JSON.stringify(datiAggiornati)
                     })
                         .then(response => {
@@ -444,7 +436,7 @@ function prenotaEsame(codiceEsame, button) {
 function cancellaPrenotazione(codicePrenotazione) {
     fetch(`/prenota/${codicePrenotazione}`, {
         method: "DELETE",
-        headers: { "Content-Type": "application/json" }
+        headers: {"Content-Type": "application/json"}
     })
         .then(response => {
             if (!response.ok) throw new Error("Errore durante la cancellazione");
