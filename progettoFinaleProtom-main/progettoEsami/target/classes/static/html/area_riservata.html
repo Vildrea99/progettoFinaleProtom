@@ -34,7 +34,18 @@
                 </tr>
             </thead>
         </table>
-        
+
+    <div class="pagination-controls">
+      <button id="prev-page" disabled>Indietro</button>
+      <span id="page-info">Pagina 1</span>
+      <button id="next-page">Avanti</button>
+    </div>
+
+    <select id="items-per-page">
+      <option value="10">10 per pagina</option>
+      <option value="20">20 per pagina</option>
+      <option value="50">50 per pagina</option>
+    </select>
 
     <!-- Bottoni -->
     <div class="btn-wrapper">
@@ -122,6 +133,7 @@
       <span id="closeModal" class="close">&times;</span>
       <h2>Dettagli Prenotazione</h2>
       <p><strong>Codice Prenotazione:</strong> <span id="modalCodicePrenotazione"></span></p>
+      <p><strong>Codice Esame:</strong> <span id="modalCodiceEsame"></span></p>
       <p><strong>Corso:</strong> <span id="modalCorso"></span></p>
       <p><strong>Data Prenotazione:</strong> <span id="modalData"></span></p>
       <button id="btnCancellaPrenotazione" class="btn btn-danger">Cancella Prenotazione</button>

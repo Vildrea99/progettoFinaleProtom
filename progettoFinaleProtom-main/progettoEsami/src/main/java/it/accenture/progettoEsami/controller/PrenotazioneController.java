@@ -19,7 +19,7 @@ public class PrenotazioneController {
     //Prenota un esame
     @PostMapping("/{matricola}/{codiceEsame}")
     public ResponseEntity<Prenotazioni> prenotaEsame(@PathVariable int matricola, @PathVariable int codiceEsame) {
-        return prenotazioniService.prenotaEsame(codiceEsame, matricola);
+        return prenotazioniService.prenotaEsame(matricola, codiceEsame);
     }
     //Restituisce una prenotazione di cui si ha il codice
     @GetMapping("/{codicePrenotazione}")
